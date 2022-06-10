@@ -1,0 +1,31 @@
+Budget_categorie : 
+* libelle
+* montant 
+
+
+Banque : 
+* libelle
+* posesseur
+
+
+Pret : 
+* 
+
+Amortissement : 
+* 
+
+
+Compte : 
+* Montant
+* Banque
+* intitule
+* Possesseur
+
+
+Opérations : 
+* date operation 
+* date valeur 
+* libelle
+* montant
+* categorie 
+* compte 
