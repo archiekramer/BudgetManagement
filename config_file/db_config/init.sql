@@ -20,6 +20,8 @@ Create table bank (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     wording VARCHAR(100) NOT NULL,
     owner_fk INT UNSIGNED NOT NULL,
+    file_regex VARCHAR(100) NOT NULL,
+    file_column_number INT UNSIGNED NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -30,6 +32,7 @@ Create table account (
     wording VARCHAR(100) NOT NULL,
     bank_fk INT UNSIGNED NOT NULL,
     owner_fk INT UNSIGNED NOT NULL,
+    wording_regex VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 

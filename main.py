@@ -3,7 +3,7 @@
 # transform data to make them ready to import
 # import data. 
 
-DIRECTORY = "/home/archiekramer/Project/BudgetManagement/data/"
+DIRECTORY = "/home/houlbert/Project/BudgetManagement/data/"
 
 # cmb : colonne 5, titre : RELEVE_COMPTE_CHEQUES_1_2022_06_13_04_25_21.csv
 # boursorama : colonne 10, titre : export-operations-14-06-2022_20-27-03.csv
@@ -11,6 +11,9 @@ DIRECTORY = "/home/archiekramer/Project/BudgetManagement/data/"
 import os
 def get_list_file_from_directory(DIRECTORY):
     return os.listdir(DIRECTORY)
+
+
+# compte 
 
 import csv
 def get_csv_data_from_file(path_file): 
@@ -22,15 +25,14 @@ def get_csv_data_from_file(path_file):
     return contenu
 
 def check_origin(data_csv, title_file): 
-    #TODO test nbr colonne + titre et si aucun alors throw error. 
-    pass
+    #TODO récupérer les infos en BDD plutôt
+    # nom fichier, nombre colonne, nom de compte. 
+    for key, value in origin.items(): 
+        if len(data_csv[0]) == value["column"] and value["title"] in title_file:
+            return key
 
 def transform_data(data_csv, title_file):
     origin = check_origin(data_csv, title_file)
-    if origin == "BOURSORAMA":
-        pass
-    elif origin == "CMB": 
-        pass
 
 
 def main(): 
