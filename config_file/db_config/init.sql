@@ -19,9 +19,9 @@ Create table link_str_category (
 Create table bank (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     wording VARCHAR(100) NOT NULL,
-    owner_fk INT UNSIGNED NOT NULL,
     file_regex VARCHAR(100) NOT NULL,
-    file_column_number INT UNSIGNED NOT NULL,
+    file_nb_column INT UNSIGNED NOT NULL,
+    account_name_id_column INT UNSIGNED NOT NULL, 
     PRIMARY KEY (id)
 );
 
@@ -31,7 +31,6 @@ Create table account (
     amount_available DECIMAL(6,3),
     wording VARCHAR(100) NOT NULL,
     bank_fk INT UNSIGNED NOT NULL,
-    owner_fk INT UNSIGNED NOT NULL,
     wording_regex VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -65,3 +64,13 @@ ALTER TABLE account ADD CONSTRAINT fk_account_bank FOREIGN KEY (bank_fk) REFEREN
 ALTER TABLE account ADD CONSTRAINT fk_account_owner FOREIGN KEY (owner_fk) REFERENCES owner_account(id);
 ALTER TABLE transaction_bank ADD CONSTRAINT fk_transaction_category FOREIGN KEY (category_fk) REFERENCES budget_category(id);
 ALTER TABLE transaction_bank ADD CONSTRAINT fk_transaction_account FOREIGN KEY (account_fk) REFERENCES account(id);
+
+
+INSERT INTO bank (id, wording, file_regex, file_nb_column, account_name_id_column)
+VALUES ('1', 'CMB', "RELEVE_COMPTE_CHEQUES_",5, 4), ('2', 'Boursorama', "export-operations-",10, 9)
+;
+
+INSERT INTO account (id, amount_available, wording, bank_fk, wording_regex)
+VALUES (1, 0, "Compte commun CMB", 1, "RELEVE_COMPTE_CHEQUES_2"), 
+(2, 0, "Compte Megan CMB", 1, "RELEVE_COMPTE_CHEQUES_1"),
+(3, 0, "Compte Maxime Boursorama", 2, "40129851");
