@@ -13,9 +13,7 @@ class BudgetCategoryRepository:
 
     def get_regex_link(self, bank_id): 
         query = """
-        Select lrc.id, 
-        lrc.regex, 
-        lrc.bank_fk,
+        Select lrc.regex,
         lrc.category_fk from link_regex_category as lrc
         where bank_fk = %s """
         cursor = self.connexion_db.cursor()

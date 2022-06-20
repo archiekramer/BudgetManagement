@@ -20,9 +20,9 @@ def main():
         data_csv = get_csv_data_from_file(complete_path)
 #        connexion_db = DataConnection.get_data_connexion()
         bank_id, account_id = AccountRepository().get_origin_account(title_file)
-        data_to_load = TransformData(bank_id).transform_data(data_csv)
-        transform_data(bank_id, data_csv)
-        add_data_to_the_list
+        data_transform = TransformData(bank_id, account_id).transform_data(data_csv,account_id)
+        data_to_load = check_duplicate_before_import(data_transform)
+        import_data
     # import_data_in_db()
 
 if __name__ == '__main__':
