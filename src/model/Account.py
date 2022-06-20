@@ -19,11 +19,10 @@ class AccountRepository:
     def get_account(id): 
         pass
 
-    def get_origin_account(self):
+    def get_bank_account_view(self):
         query = """
         Select bank.id, 
         bank.file_regex, 
-        bank.file_column_number, 
         account.id, 
         account.wording_regex from account
         INNER JOIN bank 
@@ -34,32 +33,13 @@ class AccountRepository:
         cursor.close()
         return result
     
-    def get_origin_account_in_dict(self):
+    def get_origin_account(self, title_file):
         result = self.get_origin_account()
         result_dict = dict()
         for value in result: 
-            bank_id, bank_file_regex,bank_file_column_number, account_id, account_regex = value
-            if result_dict.has_key(bank_id):
-                result_dict[bank_id] = {}
-            bank = result_dict[bank_id]
-            bank["bank_file_regex"] = bank_file_regex
-            bank["column_number"] = bank_file_column_number
-            bank[account_id] = {}
-            bank[account_id]['account_regex'] = account_regex
-        return result_dict
-
-    def check_origin_account(self, data_csv, title_file): 
-    # nom fichier, nombre colonne, nom de compte. 
-        first_line = 0
-        second_line = 1
-        account_dict = self.get_origin_account_in_dict()
-        for key_bank, bank in account_dict.items():
-            if len(data_csv[0]) == bank["column_number"] and bank["bank_file_regex"] in title_file:
-                bank_id = key_bank
-            if data_csv[1][]
-
-        if bank_id in locals() and 
-
+            bank_id, bank_file_regex, account_id, account_regex = value
+            if bank_file_regex in title_file and account_regex in title_file: 
+                return bank_id, account_id
         else:
-            raise Exception("no account find")
+            raise BaseException
 

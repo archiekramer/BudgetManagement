@@ -2,15 +2,15 @@
 # open, read csv file 
 # transform data to make them ready to import
 # import data. 
+from model.TransformData import TransformData
 from src.model.get_csv_data import get_csv_data_from_file, get_list_file_from_directory
-from src.model.Account import Account
-from config import DIRECTORY
+from src.model.Account import Account, AccountRepository
+from config import BOURSORAMA, CMB, DIRECTORY
 
 import os
 # cmb : colonne 5, titre : RELEVE_COMPTE_CHEQUES_1_2022_06_13_04_25_21.csv
 # boursorama : colonne 10, titre : export-operations-14-06-2022_20-27-03.csv
 
-def transform_data(data_csv, title_file):
 
 
 def main(): 
@@ -18,7 +18,10 @@ def main():
     for title_file in files: 
         complete_path = DIRECTORY + title_file
         data_csv = get_csv_data_from_file(complete_path)
-        transform_data(data_csv, title_file)
+#        connexion_db = DataConnection.get_data_connexion()
+        bank_id, account_id = AccountRepository().get_origin_account(title_file)
+        data_to_load = TransformData(bank_id).transform_data(data_csv)
+        transform_data(bank_id, data_csv)
         add_data_to_the_list
     # import_data_in_db()
 
