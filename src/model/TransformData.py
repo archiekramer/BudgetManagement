@@ -20,14 +20,19 @@ class TransformData:
         data_clean = []
         for transaction in data_csv: 
             categorie_fk = self.check_category_transaction(transaction, regex_link, config_banque["column_check_cat"])
-            amount = transaction[config_banque["column_amount"]]
+            if "column_credit" in config_banque: 
+                if transaction[config_banque["column_debit"]] is None:
+                    amount = transaction[config_banque["column_credit"]]
+                else:
+                    amount = - transaction[config_banque["column_debit"]]
+            else: 
+                amount = transaction[config_banque["column_credit"]]
             wording = transaction[config_banque["column_libelle"]]
-            operation_date = transaction[config_banque["operation_date"]]
-            value_date = transaction[config_banque["value_date"]]
+            operation_date = transaction[config_banque["column_operation_date"]]
+            value_date = transaction[config_banque["column_value_date"]]
             account_fk = self.account_id
             data_clean.append(operation_date, value_date, wording, amount, categorie_fk, account_fk)
         return data_clean
-
 
     def check_category_transaction(self, transaction, regex_link, column_csv_to_check):
         regex = 0
@@ -40,4 +45,3 @@ class TransformData:
 
     def create_csv_to_load(self): 
         pass
-

@@ -35,7 +35,7 @@ Create table account (
 );
 
 
-Create table transaction_bank(
+Create table transaction_account(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     operation_date DATE,
     value_date DATE,
@@ -62,8 +62,8 @@ ALTER TABLE link_regex_category ADD CONSTRAINT fk_regex_budget FOREIGN KEY (cate
 ALTER TABLE bank ADD CONSTRAINT fk_bank_owner FOREIGN KEY (owner_fk) REFERENCES owner_account(id);
 ALTER TABLE account ADD CONSTRAINT fk_account_bank FOREIGN KEY (bank_fk) REFERENCES bank(id);
 ALTER TABLE account ADD CONSTRAINT fk_account_owner FOREIGN KEY (owner_fk) REFERENCES owner_account(id);
-ALTER TABLE transaction_bank ADD CONSTRAINT fk_transaction_category FOREIGN KEY (category_fk) REFERENCES budget_category(id);
-ALTER TABLE transaction_bank ADD CONSTRAINT fk_transaction_account FOREIGN KEY (account_fk) REFERENCES account(id);
+ALTER TABLE transaction_account ADD CONSTRAINT fk_transaction_category FOREIGN KEY (category_fk) REFERENCES budget_category(id);
+ALTER TABLE transaction_account ADD CONSTRAINT fk_transaction_account FOREIGN KEY (account_fk) REFERENCES account(id);
 
 
 INSERT INTO bank (id, wording, file_regex)
