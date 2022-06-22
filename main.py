@@ -2,7 +2,7 @@
 # open, read csv file 
 # transform data to make them ready to import
 # import data. 
-from TransactionAccount import TransactionAccountRepository
+from model.TransactionAccount import TransactionAccountRepository
 from model.TransformData import TransformData
 from src.model.get_csv_data import get_csv_data_from_file, get_list_file_from_directory
 from src.model.Account import Account, AccountRepository
@@ -23,9 +23,8 @@ def main():
 #        connexion_db = DataConnection.get_data_connexion()
         bank_id, account_id = AccountRepository().get_origin_account(title_file)
         data_transform = TransformData(bank_id, account_id).transform_data(data_csv,account_id)
-        data_to_load = TransactionAccountRepository().check_duplicate_value(data_transform, account_id, last_date_check)
-        check_duplicate_before_import(data_transform, bank_id, account_id)
-        import_data
+        TransactionAccountRepository().check_and_load(data_transform, account_id, last_date_check)
+        
     # import_data_in_db()
 
 if __name__ == '__main__':
