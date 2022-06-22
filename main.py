@@ -25,8 +25,6 @@ def main():
         data_transform = TransformData(bank_id, account_id).transform_data(data_csv,account_id)
         TransactionAccountRepository().check_and_load(data_transform, account_id, last_date_check)
         
-    # import_data_in_db()
-
 if __name__ == '__main__':
     main()
 

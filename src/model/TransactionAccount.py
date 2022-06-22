@@ -33,6 +33,8 @@ class TransactionAccount:
         and self.category_fk == other.category_fk
         and self.account_fk == other.account_fk)
 
+    def tuple_form(self): 
+        return (self.operation_date, self.value_date, self.wording, self.amount, self.category_fk, self.account_fk)
 
 class TransactionAccountRepository: 
     def __init__(self, connexion_db = None) -> None:
@@ -44,7 +46,7 @@ class TransactionAccountRepository:
     def check_and_load(self, data_transform,account_id, last_date_check ): 
         last_transaction_download = self.get_transaction(account_id, last_date_check)
         #check si double ou triple by deleting
-        data_to_load = self.check_already_present(last_transaction_download, data_transform)
+        return self.check_already_present(last_transaction_download, data_transform)
 
     def check_already_present(self, last_transaction_download, data_transform):
         data_to_load = []
@@ -74,39 +76,11 @@ class TransactionAccountRepository:
 
     def push_transaction(self,account_id, data_to_load): 
         #TODO import 
-        
         query = """
-        INSERT INTO operation_date, 
-        value_date, 
-        wording, 
-        amount,
-        category_fk from transaction_account
-        where transaction_account.account_fk == %s ans operation_date <= %s"""
+        INSERT INTO transaction_account (operation_date, value_date, wording, amount, category_fk, account_fk)
+        VALUES (%s, %s, %s, %s, %s, %s)"""
         cursor = self.connexion_db.cursor()
-        cursor.execute(query, (account_id,last_date_transaction))
-        result = cursor.fetchall()
+        data_to_load = [elt.tuple_form() for elt in data_to_load]
+        cursor.executemany(sql, data_to_load) #[(,),(,)]
         cursor.close()
-        return result
-
-
-#todo
-sql = "INSERT INTO customers (name, address) VALUES (%s, %s)"
-val = [
-  ('Peter', 'Lowstreet 4'),
-  ('Amy', 'Apple st 652'),
-  ('Hannah', 'Mountain 21'),
-  ('Michael', 'Valley 345'),
-  ('Sandy', 'Ocean blvd 2'),
-  ('Betty', 'Green Grass 1'),
-  ('Richard', 'Sky st 331'),
-  ('Susan', 'One way 98'),
-  ('Vicky', 'Yellow Garden 2'),
-  ('Ben', 'Park Lane 38'),
-  ('William', 'Central st 954'),
-  ('Chuck', 'Main Road 989'),
-  ('Viola', 'Sideway 1633')
-]
-
-mycursor.executemany(sql, val)
-
-mydb.commit()
+        self.connexion_db.commit()
