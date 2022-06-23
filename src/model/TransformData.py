@@ -43,7 +43,7 @@ class TransformData:
             if line[regex] in transaction[column_csv_to_check]: 
                 return line[categorie]
         else: 
-            return 0 #categorie Divers par défaut initié au début de la BDD première ligne
+            return 1 #categorie Divers par défaut initié au début de la BDD première ligne
 
     def create_csv_to_load(self): 
         pass

@@ -2,18 +2,16 @@
 # open, read csv file 
 # transform data to make them ready to import
 # import data. 
-from model.TransactionAccount import TransactionAccountRepository
-from model.TransformData import TransformData
+from src.model.TransactionAccount import TransactionAccountRepository
+from src.model.TransformData import TransformData
 from src.model.get_csv_data import get_csv_data_from_file, get_list_file_from_directory
 from src.model.Account import Account, AccountRepository
-from config import BOURSORAMA, CMB, DIRECTORY
-
+from config import DIRECTORY
 import os, datetime
 # cmb : colonne 5, titre : RELEVE_COMPTE_CHEQUES_1_2022_06_13_04_25_21.csv
 # boursorama : colonne 10, titre : export-operations-14-06-2022_20-27-03.csv
 
 last_date_check = datetime.datetime.now() - datetime.timedelta(days=45)
-
 
 def main(): 
     files = get_list_file_from_directory(DIRECTORY)
