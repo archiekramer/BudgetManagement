@@ -1,5 +1,5 @@
 from logging import raiseExceptions
-from src.lib.DataConnection import DataConnection
+from src.lib_spe.DataConnection import DataConnection
 from src.model.Bank import Bank
 from src.model.Owner import Owner
 
@@ -63,12 +63,12 @@ class AccountRepository:
         account_ls = [range(len(result))]
         for value in result: 
             bank_id, bank, account_id, account = value
-            print("Banque : {banque} banque_id : {banque_id} compte : {compte} compte_id : {compte_id}".format(banque=bank, 
-            banque_id= bank_id, compte = account, compte_id = account_id))
+            print("{compte_id} : Banque = {banque} compte = {compte}".format(banque=bank, compte = account, compte_id = account_id))
             account_ls[account_id] = bank_id
         while True:
             print("veuillez choisir l'id du compte concerné par l'import du fichier {}".format(title_file))
             id = input()
             if id in account_ls: 
                 break
-        return account_ls[id], id
+        bank_id = account_ls[id]
+        return bank_id, id

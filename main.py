@@ -20,7 +20,7 @@ def main():
         data_csv = get_csv_data_from_file(complete_path)
         #TODO offrir un autre mode de selection du compte et banque concerné par import genre selection dans liste. 
         bank_id, account_id = AccountRepository().get_origin_account_input(title_file)
-        data_transform = TransformData(bank_id, account_id).transform_data(data_csv,account_id)
+        data_transform = TransformData(bank_id, account_id).transform_data(data_csv)
         TransactionAccountRepository().check_and_load(data_transform, account_id, last_date_check)
         
 if __name__ == '__main__':

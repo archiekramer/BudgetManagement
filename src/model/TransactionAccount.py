@@ -1,5 +1,5 @@
 from genericpath import exists
-from src.lib.DataConnection import DataConnection
+from src.lib_spe.DataConnection import DataConnection
 
 
 class TransactionAccount: 
@@ -20,7 +20,6 @@ class TransactionAccount:
         self.value_date  = list_form[1]
         self.wording = list_form[2]
         self.amount = list_form[3]
-        self.category_fk = list_form[4]
 
     def __eq__(self, other): 
         if not isinstance(other, TransactionAccount):
@@ -30,7 +29,6 @@ class TransactionAccount:
         and self.value_date == other.value_date 
         and self.wording == other.wording
         and self.amount == other.amount
-        and self.category_fk == other.category_fk
         and self.account_fk == other.account_fk)
 
     def tuple_form(self): 
@@ -38,15 +36,13 @@ class TransactionAccount:
 
 class TransactionAccountRepository: 
     def __init__(self, connexion_db = None) -> None:
-        if connexion_db is None:
-            self.connexion_db = DataConnection.get_data_connexion()
-        else:
-            self.connexion_db = connexion_db
+        self.connexion_db = DataConnection.get_data_connexion()
 
     def check_and_load(self, data_transform,account_id, last_date_check ): 
         last_transaction_download = self.get_transaction(account_id, last_date_check)
-        #check si double ou triple by deleting
-        return self.check_already_present(last_transaction_download, data_transform)
+        #check si duplicate ou triple by deleting
+        data_to_load =  self.check_already_present(last_transaction_download, data_transform)
+        self.push_transaction(data_to_load)
 
     def check_already_present(self, last_transaction_download, data_transform):
         data_to_load = []
@@ -54,7 +50,6 @@ class TransactionAccountRepository:
             if data_ready in last_transaction_download: 
                 last_transaction_download.remove(data_ready)
             else: 
-                TransactionAccount(data_ready)
                 data_to_load.append(data_ready)
         return data_to_load
 
@@ -65,8 +60,8 @@ class TransactionAccountRepository:
         value_date, 
         wording, 
         amount,
-        category_fk from transaction_account
-        where transaction_account.account_fk == %s ans operation_date <= %s"""
+        from transaction_account
+        where transaction_account.account_fk == %s ans operation_date >= %s"""
         cursor = self.connexion_db.cursor()
         cursor.execute(query, (account_id,last_date_transaction))
         result = cursor.fetchall()
@@ -74,8 +69,7 @@ class TransactionAccountRepository:
         result = [TransactionAccount(list_form = transaction, account_id= account_id) for transaction in result]
         return result
 
-    def push_transaction(self,account_id, data_to_load): 
-        #TODO import 
+    def push_transaction(self, data_to_load): 
         query = """
         INSERT INTO transaction_account (operation_date, value_date, wording, amount, category_fk, account_fk)
         VALUES (%s, %s, %s, %s, %s, %s)"""
