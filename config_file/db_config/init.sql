@@ -27,7 +27,7 @@ Create table bank (
 
 Create table account (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    amount_available DECIMAL(6,3),
+    amount_available DECIMAL(10,3),
     wording VARCHAR(100) NOT NULL,
     bank_fk INT UNSIGNED NOT NULL,
     file_regex VARCHAR(100) NOT NULL,

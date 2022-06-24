@@ -1,6 +1,6 @@
 from genericpath import exists
 from src.lib_spe.DataConnection import DataConnection
-
+from datetime import datetime
 
 class TransactionAccount: 
     def __init__(self, operation_date = None, value_date = None, 
@@ -36,7 +36,7 @@ class TransactionAccount:
 
 class TransactionAccountRepository: 
     def __init__(self, connexion_db = None) -> None:
-        self.connexion_db = DataConnection.get_data_connexion()
+        self.connexion_db = DataConnection().get_data_connexion()
 
     def check_and_load(self, data_transform,account_id, last_date_check ): 
         last_transaction_download = self.get_transaction(account_id, last_date_check)
@@ -59,11 +59,11 @@ class TransactionAccountRepository:
         Select operation_date, 
         value_date, 
         wording, 
-        amount,
+        amount
         from transaction_account
-        where transaction_account.account_fk == %s ans operation_date >= %s"""
+        where account_fk = %s and operation_date >= %s"""
         cursor = self.connexion_db.cursor()
-        cursor.execute(query, (account_id,last_date_transaction))
+        cursor.execute(query, (account_id, datetime.strftime(last_date_transaction, "%Y-%m-%d")))
         result = cursor.fetchall()
         cursor.close()
         result = [TransactionAccount(list_form = transaction, account_id= account_id) for transaction in result]
@@ -75,6 +75,6 @@ class TransactionAccountRepository:
         VALUES (%s, %s, %s, %s, %s, %s)"""
         cursor = self.connexion_db.cursor()
         data_to_load = [elt.tuple_form() for elt in data_to_load]
-        cursor.executemany(sql, data_to_load) #[(,),(,)]
+        cursor.execute(query, data_to_load[0]) #[(,),(,)]
         cursor.close()
         self.connexion_db.commit()

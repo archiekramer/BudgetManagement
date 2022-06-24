@@ -1,7 +1,9 @@
 from webbrowser import get
 from config import banque
-from model.BudgetCategory import BudgetCategoryRepository
-from model.TransactionAccount import TransactionAccount
+from src.model.BudgetCategory import BudgetCategoryRepository
+from src.model.TransactionAccount import TransactionAccount
+from decimal import Decimal
+from datetime import datetime
 
 class TransformData: 
     def __init__(self, bank_id, account_id) -> None:
@@ -19,19 +21,20 @@ class TransformData:
 
     def tranformation(self, data_csv, regex_link, config_banque):
         data_clean = []
-        for transaction in data_csv: 
+        for line_transaction in data_csv: 
             transaction = TransactionAccount()
-            transaction.category_fk = self.check_category_transaction(transaction, regex_link, config_banque["column_check_cat"])
+            transaction.category_fk = self.check_category_transaction(line_transaction, regex_link, config_banque["column_check_cat"])
             if "column_credit" in config_banque: 
-                if transaction[config_banque["column_debit"]] is None:
-                    transaction.amount = transaction[config_banque["column_credit"]]
+                if line_transaction[config_banque["column_debit"]] == "":
+                    transaction.amount = Decimal(line_transaction[config_banque["column_credit"]].replace(",", "."))
                 else:
-                    transaction.amount = - transaction[config_banque["column_debit"]]
+                    transaction.amount = - Decimal(line_transaction[config_banque["column_debit"]].replace(",", "."))
             else: 
-                transaction.amount = transaction[config_banque["column_credit"]]
-            transaction.wording = transaction[config_banque["column_libelle"]]
-            transaction.operation_date = transaction[config_banque["column_operation_date"]]
-            transaction.value_date = transaction[config_banque["column_value_date"]]
+                transaction.amount = Decimal(line_transaction[config_banque["column_credit"]].replace(",", "."))
+            transaction.wording = line_transaction[config_banque["column_libelle"]]
+            #TODO transforme Date in acurate datetime value.
+            transaction.operation_date = datetime.strptime(line_transaction[config_banque["column_operation_date"]], config_banque['format_date'])
+            transaction.value_date = datetime.strptime(line_transaction[config_banque["column_operation_date"]], config_banque['format_date'])
             transaction.account_fk = self.account_id
             data_clean.append(transaction)
         return data_clean

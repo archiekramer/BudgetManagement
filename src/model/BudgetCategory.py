@@ -1,4 +1,5 @@
-from lib.DataConnection import DataConnection
+from src.lib_spe.DataConnection import DataConnection
+
 
 class BudgetCategory: 
     def __init__(self) -> None:
@@ -7,7 +8,7 @@ class BudgetCategory:
 class BudgetCategoryRepository: 
     def __init__(self, connexion_db = None) -> None:
         if connexion_db is None:
-            self.connexion_db = DataConnection.get_data_connexion()
+            self.connexion_db = DataConnection().get_data_connexion()
         else:
             self.connexion_db = connexion_db
 
