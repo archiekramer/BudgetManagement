@@ -30,7 +30,12 @@ class TransformData:
                 else:
                     transaction.amount = - Decimal(line_transaction[config_banque["column_debit"]].replace(",", "."))
             else: 
-                transaction.amount = Decimal(line_transaction[config_banque["column_credit"]].replace(",", "."))
+                value = line_transaction[config_banque["column_debit"]].replace(" ", "")
+                if "-" in line_transaction[config_banque["column_debit"]]: 
+                    value = - Decimal(value.replace("-", "").replace(",","."))
+                else :
+                    value = Decimal(value.replace(",","."))
+                transaction.amount = value
             transaction.wording = line_transaction[config_banque["column_libelle"]]
             #TODO transforme Date in acurate datetime value.
             transaction.operation_date = datetime.strptime(line_transaction[config_banque["column_operation_date"]], config_banque['format_date'])

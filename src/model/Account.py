@@ -73,7 +73,7 @@ class AccountRepository:
                 id = int(id)
             except: 
                 print("indiquez un chiffre")
-            if id in account_ls and id != 0: 
+            if id < len(account_ls) and id != 0: 
                 break
         bank_id = account_ls[id]
         return bank_id, id
