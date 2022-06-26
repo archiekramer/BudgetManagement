@@ -1,3 +1,4 @@
+reset_db = """
 drop database budget_management; 
 create database budget_management CHARACTER SET 'utf8'; 
 use budget_management;
@@ -5,7 +6,8 @@ use budget_management;
 Create table budget_category (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     wording VARCHAR(100) NOT NULL,
-    amount_planned DECIMAL(6,3),
+    detail VARCHAR(100) NOT NULL,
+    amount_planned DECIMAL(10,3),
     PRIMARY KEY (id)
 );
 
@@ -40,7 +42,7 @@ Create table transaction_account(
     operation_date DATE,
     value_date DATE,
     wording VARCHAR(100) NOT NULL,
-    amount DECIMAL(6,3),
+    amount DECIMAL(10,3),
     category_fk INT UNSIGNED NOT NULL,
     account_fk INT UNSIGNED NOT NULL,
     PRIMARY KEY (id),
@@ -63,14 +65,5 @@ ALTER TABLE account ADD CONSTRAINT fk_account_bank FOREIGN KEY (bank_fk) REFEREN
 ALTER TABLE transaction_account ADD CONSTRAINT fk_transaction_category FOREIGN KEY (category_fk) REFERENCES budget_category(id);
 ALTER TABLE transaction_account ADD CONSTRAINT fk_transaction_account FOREIGN KEY (account_fk) REFERENCES account(id);
 
+"""
 
-INSERT INTO bank (id, wording, file_regex)
-VALUES (1, 'CMB', "RELEVE_COMPTE_CHEQUES_"), (2, 'Boursorama', "export-operations-");
-
-INSERT INTO account (id, amount_available, wording, bank_fk, file_regex)
-VALUES (1, 0, "Compte commun CMB", 1, "RELEVE_COMPTE_CHEQUES_2"), 
-(2, 0, "Compte Megan CMB", 1, "RELEVE_COMPTE_CHEQUES_1"),
-(3, 0, "Compte Maxime Boursorama", 2, "export-operations");
-
-INSERT INTO budget_category (id, wording, amount_planned)
-VALUES (1, "Divers", 300);

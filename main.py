@@ -15,7 +15,7 @@ last_date_check = datetime.datetime.now() - datetime.timedelta(days=45)
 
 def main(): 
     files = get_list_file_from_directory(DIRECTORY)
-    for title_file in files: 
+    for title_file in files:  
         complete_path = DIRECTORY + title_file 
         data_csv = get_csv_data_from_file(complete_path)
         #TODO offrir un autre mode de selection du compte et banque concerné par import genre selection dans liste. 

@@ -75,6 +75,7 @@ class TransactionAccountRepository:
         VALUES (%s, %s, %s, %s, %s, %s)"""
         cursor = self.connexion_db.cursor()
         data_to_load = [elt.tuple_form() for elt in data_to_load]
-        cursor.execute(query, data_to_load[0]) #[(,),(,)]
+        cursor.executemany(query, data_to_load) #[(,),(,)]
         cursor.close()
         self.connexion_db.commit()
+        self.connexion_db.close()
