@@ -3,7 +3,7 @@ from config import banque
 from src.model.BudgetCategory import BudgetCategoryRepository
 from src.model.TransactionAccount import TransactionAccount
 from decimal import Decimal
-from datetime import datetime
+from datetime import datetime, date
 
 class TransformData: 
     def __init__(self, bank_id, account_id) -> None:
@@ -37,9 +37,12 @@ class TransformData:
                     value = Decimal(value.replace(",","."))
                 transaction.amount = value
             transaction.wording = line_transaction[config_banque["column_libelle"]]
-            #TODO transforme Date in acurate datetime value.
-            transaction.operation_date = datetime.strptime(line_transaction[config_banque["column_operation_date"]], config_banque['format_date'])
-            transaction.value_date = datetime.strptime(line_transaction[config_banque["column_operation_date"]], config_banque['format_date'])
+            #operation date
+            operation_date = datetime.strptime(line_transaction[config_banque["column_operation_date"]], config_banque['format_date'])
+            transaction.operation_date = date(operation_date.year, operation_date.month, operation_date.day)
+            # value date
+            value_date = datetime.strptime(line_transaction[config_banque["column_value_date"]], config_banque['format_date'])
+            transaction.value_date = date(value_date.year, value_date.month, value_date.day)
             transaction.account_fk = self.account_id
             data_clean.append(transaction)
         return data_clean

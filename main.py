@@ -11,7 +11,7 @@ import os, datetime
 # cmb : colonne 5, titre : RELEVE_COMPTE_CHEQUES_1_2022_06_13_04_25_21.csv
 # boursorama : colonne 10, titre : export-operations-14-06-2022_20-27-03.csv
 
-last_date_check = datetime.datetime.now() - datetime.timedelta(days=45)
+last_date_check = datetime.datetime.now() - datetime.timedelta(days=5000)
 
 def main(): 
     files = get_list_file_from_directory(DIRECTORY)
