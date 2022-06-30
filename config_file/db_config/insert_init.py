@@ -30,7 +30,11 @@ insert_init = [
             ( 16 , "Pertes et Profit" , "Entrée d'argent non attendu etc..", 0),
             ( 17 , "Achat Maison" , "Achat de la maison-terrain", 0),        
             ( 18 , "Construction Maison" , "Construction de la maison", 0),
-            ( 19 , "Vacance 2022" , "Budget vacance 2022", 0)
+            ( 19 , "Vacance 2022" , "Budget vacance 2022", 0),
+            ( 20 , "Salaire" , "Nos Salaire", 0),
+            (21, "Assurance Sante", "mutuel, remboursement etat", 0),
+            (22, "Contentieux Justice", "Poursuite maison etc...", 0)
+
             """, 
         """
         INSERT INTO link_regex_category (id, regex, bank_fk, category_fk)
